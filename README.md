@@ -63,12 +63,12 @@ Game.ShowNotification("Destroying self in 5 seconds!")
 ## Random
 The Random library is a library focused around randomness.
 ### Random.Int(a, b)
-
 Aliases: Random.Num, Random.Number
 
-### Random.Float(a, b)
+This function is pretty self explanatory.
 
-**These are pretty self explanatory.**
+### Random.Float(a, b)
+This function is pretty self explanatory.
 
 ### Random.Text
 
