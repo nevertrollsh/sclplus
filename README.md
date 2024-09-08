@@ -25,3 +25,37 @@ This function now accepts these fields: `name, ident, parent, pos, alwaysActive,
 
 3. Scene.EditObject
 No documentation for this yet. The function is WIP.
+
+## Thread
+Thread is a **new** library added by SCL+, it allows for multithreading easily!
+
+1. Thread.New(name, thread)
+In this, `name` must be a string, and `thread` must be a function.
+This function also returns back the new thread name it converted to.
+Examples:
+```js
+function myFunc()
+    Game.ShowNotification("Hello, World!")
+end
+
+local thread = Thread.New("hello", myFunc)
+
+```
+> WARNING: If your thread name is similar to another thread name then the function will add a "1" to your thread name i.e. if a thread's name is "hello" then it'll get turned into "thr_hello1". Thread name can be optional in some cases. 
+> Well, it doesn't really matter much because thread names are pretty much useless.
+
+### Thread Parameters
+Threads can pass data, and parameters of your choice. For example:
+```lua
+local self = ...;
+
+function myFunc(threadname, data)
+    -- data is "self" here.
+    Program.Wait(5)
+    data:destroy()
+end
+
+
+Thread.New("destroyer", myFunc)
+Game.ShowNotification("Destroying self in 5 seconds!")
+```
