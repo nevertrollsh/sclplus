@@ -8,4 +8,5 @@ The Math library in SP is an interesting libary which adds several functions i.e
 3. Math.Floor(x,y)
 4. Math.Ceil(x,y)
 5. Math.Square(n)
+   
 These functions are pretty self explanatory.
