@@ -67,9 +67,10 @@ The Random library is a library focused around randomness.
 Aliases: Random.Num, Random.Number
 
 3. Random.Float(a, b)
-These are pretty self explanatory.
 
-4. Random.Text
+**These are pretty self explanatory.**
+
+5. Random.Text
 
 Aliases: Random.Choice
 Examples:
