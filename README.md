@@ -59,3 +59,21 @@ end
 Thread.New("destroyer", myFunc)
 Game.ShowNotification("Destroying self in 5 seconds!")
 ```
+
+## Random
+The Random library is a library focused around randomness.
+1. Random.Int(a, b)
+
+Aliases: Random.Num, Random.Number
+
+3. Random.Float(a, b)
+These are pretty self explanatory.
+
+4. Random.Text
+
+Aliases: Random.Choice
+Examples:
+```lua
+Game.ShowNotification(Random.Choice({"Hello","Hi"}))
+-- This will print either Hello, or Hi.
+```
