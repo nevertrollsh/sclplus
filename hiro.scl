@@ -172,17 +172,6 @@ obj:setAlwaysActive(true)
 obj:setHidden(true)
 end
 
-while true do
-    if rlswhook then
-        rlswhook()
-        break
-    end
-    Program.Wait(0.01)
-end
-
-
-
-
 
 $end$
             secondary_chunk : ''
