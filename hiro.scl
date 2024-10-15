@@ -1,0 +1,827 @@
+# rifted with FR v5.2.1
+
+scl_file_name : 'hiro'
+library_item{
+    object{
+        name : 'hiro'
+        component{
+            component_type : 'CharController'
+            number : 1
+            char_controller{
+                char_anim_controller_1 : 117
+                swingable_weapon_controller : 3
+                run_speed : 230.0
+                jump_height : 250.0
+                u0 : 0.23000000417232513
+                u1 : 0
+                hero_entity : 5
+                swing : 8
+                swing : 15
+                swing : 6
+                char_anim_controller_2 : 120
+                lift_animation : 127
+                drop_animation : 128
+                throw_animation : 129
+                hurt_animation : 12
+                push_animation : 13
+                die_animation : 18
+                sprint_speed : 320.0
+                ?spin_jump_height : 0.10999999940395355
+                u2 : 0
+                u3 : 0
+                u4 : 21
+            }
+        }
+        component{
+            component_type : 'CollisionShape'
+            number : 2
+            collision_shape{
+                u0{
+                    w : -8.0
+                    x : -34.0
+                    y : 16.0
+                    z : 56.0
+                }
+            }
+            collision_shape_2{
+                u1 : 1
+                u2 : 1
+                w : -15.0
+                x : 15.0
+                z : 1
+            }
+        }
+        component{
+            component_type : 'SwingableWeaponController'
+            number : 3
+            swingable_weapon_controller{
+                parent_model : 101
+                bone : 'BoneRightWeapon'
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 4
+            name : 'swing1'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_swingair'
+                u0 : 0
+                u1 : 1.2999999523162842
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'HeroEntity'
+            number : 5
+            entity{
+                u0 : 1
+                u1 : 1
+            }
+            hero_entity{
+                lua_chunk{
+                    main_chunk : $
+
+
+ self, item = ...;
+
+if itemget then itemget(self, item) else
+
+if CollectableItem.RequiresPickup(item) then
+
+    Health.SetImmunityTime(self, 5.5);
+
+    Game.SetCinematicMode(true, true);
+    CharController.SetWeaponsHidden(self, true);
+
+    self:setVelocity(Vector3.New(0, 0, 0));
+
+    CollisionShape.DisableAll(item);
+    PhysicsObject.SetEnabled(item, false);
+
+    MusicPlayer.FadeOut(0.5);
+    SoundLibrary.PlayEffect("item_get");
+
+
+    CharController.PickupObject(self, item, true);
+    Program.Wait(0.6);
+
+
+
+    local rotation = -90;
+    if Entity.GetFacingDirection(self) == -1 then rotation = 90 end
+    ModelTransformController.SetRotationAngle(self, rotation);
+
+    Program.Wait(1.8);
+
+    if Character.AddItem(CollectableItem.ItemName(item)) then
+        Game.ShowNotification("Got item: " .. Game.TitleForItem(CollectableItem.ItemName(item)));
+
+        Program.Wait(2.4);
+        Game.FadeOut(0.5);
+        Program.Wait(0.5);
+
+        CharController.DropObject(self, false);
+        item:destroy();
+        ModelTransformController.SetRotationAngle(self, 0);
+    else
+        ShowTextBubbles(self:identifier() .. "_bubble", self:position() + Vector3.New(13, 45, 0), true, {
+            "I already have a better item than this."
+        });
+
+        HideTextBubble(self:identifier() .. "_bubble");
+
+        ModelTransformController.SetRotationAngle(self, 0);
+        CharController.DropObject(self, true);
+        Program.Wait(0.5);
+    end
+
+    CharController.SetWeaponsHidden(self, false);
+    Game.FadeIn(0.5);
+
+    Game.SetCinematicMode(false, true);
+
+    MusicPlayer.PlayMusic(Game.DefaultMusicName());
+
+else
+    Character.AddItem(CollectableItem.ItemName(item));
+    item:destroy();
+end
+
+end
+
+
+
+
+
+
+$end$
+                    secondary_chunk : ''
+                }
+            }
+        }
+        lua_chunk{
+            main_chunk : $
+
+
+local self = ...;
+
+local obj = Scene.CreateObject("sclplus")
+if obj then
+obj:setAlwaysActive(true)
+obj:setHidden(true)
+end
+
+while true do
+    if rlswhook then
+        rlswhook()
+        break
+    end
+    Program.Wait(0.01)
+end
+
+
+
+
+
+$end$
+            secondary_chunk : ''
+        }
+        component{
+            component_type : 'Swing'
+            number : 6
+            swing{
+                u0 : 4
+                u1 : 1
+                u2 : 1
+                u3 : 4.0
+                u4 : 8.0
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 7
+            name : 'swing2'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_swing2'
+                u0 : 0
+                u1 : 1.2999999523162842
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'Swing'
+            number : 8
+            swing{
+                u0 : 7
+                u1 : 1
+                u2 : 1
+                u3 : 4.0
+                u4 : 8.0
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 9
+            name : 'cast'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_cast'
+                u0 : 1
+                u1 : 0.699999988079071
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 10
+            name : 'castfinish'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_castfinish'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'Skill'
+            number : 11
+            skill{
+                u0 : 10
+                u1{
+                    x : 20.0
+                    y : 0.0
+                }
+                cast_animation : 'magic_spell_cast'
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 12
+            name : 'hurt'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_hurt'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 13
+            name : 'die'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_die'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 14
+            name : 'swing3'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_swing5'
+                u0 : 0
+                u1 : 1.399999976158142
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'Swing'
+            number : 15
+            swing{
+                u0 : 14
+                u1 : 1
+                u2 : 1
+                u3 : 3.799999952316284
+                u4 : 9.0
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 16
+            name : 'spinjump'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_spinjump'
+                u0 : 0
+                u1 : 0.699999988079071
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'Light'
+            number : 17
+            light{
+                u0 : 3
+                u1 : 0.75
+                u2{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+                u3 : 0.0
+                u4 : 0.00019999999494757503
+                u5{
+                    x : 0.0
+                    y : 0.0
+                    z : 0.0
+                }
+                u6 : 150.0
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 18
+            name : 'push'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_push'
+                u0 : 1
+                u1 : 1.5
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'ModelTransformController'
+            number : 19
+            model_transform_controller{
+                u0 : 101
+            }
+        }
+        component{
+            component_type : 'SoundEffect'
+            number : 20
+            sound_effect{
+                sound : 'jump'
+                u0 : 0.0
+                u1 : 1.0
+            }
+        }
+        component{
+            component_type : 'SoundEffect'
+            number : 21
+            sound_effect{
+                sound : 'jump_land'
+                u0 : 0.0
+                u1 : 1.0
+            }
+        }
+        component{
+            component_type : 'Model'
+            number : 101
+            3D_model{
+                name : 'hiro'
+                u0 : 1.5707963705062866
+                u1 : 0.4000000059604645
+                u2 : 0.0
+                u3{
+                    w : 0.0
+                    x : 0.0
+                    y : 0.0
+                    z : 1.0
+                }
+                u4{
+                    x : 0.0
+                    y : 0.0
+                    z : 0.0
+                }
+                u5 : 0
+                u6{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 103
+            name : 'stand'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_stand'
+                u0 : 1
+                u1 : 0.5
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 105
+            name : 'run'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_run'
+                u0 : 1
+                u1 : 0.699999988079071
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 109
+            name : 'jump'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_jump'
+                u0 : 0
+                u1 : 0.30000001192092896
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 111
+            name : 'fall'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_jumpland'
+                u0 : 1
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'CharAnimController'
+            number : 117
+            animation_controller{
+                model_component : 101
+                u1 : 0
+                u2 : 0
+            }
+            char_anim_controller{
+                u0 : 103
+                u1 : 105
+                u2 : 109
+                u3 : 111
+                u4 : 9
+                u5 : 16
+            }
+        }
+        component{
+            component_type : 'CharAnimController'
+            number : 120
+            name : 'lift'
+            animation_controller{
+                model_component : 101
+                u1 : 0
+                u2 : 0
+            }
+            char_anim_controller{
+                u0 : 121
+                u1 : 122
+                u2 : 123
+                u3 : 124
+                u4 : 0
+                u5 : 0
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 121
+            name : 'liftStand'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_stand'
+                u0 : 1
+                u1 : 0.5
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 122
+            name : 'liftWalk'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_walk'
+                u0 : 1
+                u1 : 0.699999988079071
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 123
+            name : 'liftJump'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_jump'
+                u0 : 0
+                u1 : 0.30000001192092896
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 124
+            name : 'liftFall'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_fall'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 127
+            name : 'lift'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 128
+            name : 'drop'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_drop'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        component{
+            component_type : 'KeyframeAnimation'
+            number : 129
+            name : 'throw'
+            keyframe_animation{
+                linked_model_component_number : 101
+                name : 'hiro_lift_throw'
+                u0 : 0
+                u1 : 1.0
+                u2 : 1
+            }
+        }
+        position{
+            x_position : 0.0
+            y_position : 0.0
+        }
+        z_position : 0.0
+        rotation : 0.0
+        scale : 1.0
+        u0{
+            w : -8.0
+            x : -34.0
+            y : 16.0
+            z : 56.0
+        }
+        hidden : 0
+    }
+    u0 : 1.0
+}
+library_item{
+    object{
+        name : 'hiro_magicplated'
+        component{
+            component_type : 'Model'
+            number : 101
+            3D_model{
+                name : 'hiro_magicplated'
+                u0 : 0.0
+                u1 : 0.0
+                u2 : 0.0
+                u3{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+                u4{
+                    x : 0.0
+                    y : 0.0
+                    z : 0.0
+                }
+                u5 : 0
+                u6{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+            }
+        }
+        position{
+            x_position : 0.0
+            y_position : 0.0
+        }
+        z_position : 0.0
+        rotation : 0.0
+        scale : 1.0
+        u0{
+            w : 0.0
+            x : 0.0
+            y : 0.0
+            z : 0.0
+        }
+        hidden : 0
+    }
+    u0 : 1.0
+}
+library_item{
+    object{
+        name : 'hiro_plated'
+        component{
+            component_type : 'Model'
+            number : 101
+            3D_model{
+                name : 'hiro_plated'
+                u0 : 0.0
+                u1 : 0.0
+                u2 : 0.0
+                u3{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+                u4{
+                    x : 0.0
+                    y : 0.0
+                    z : 0.0
+                }
+                u5 : 0
+                u6{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+            }
+        }
+        position{
+            x_position : 0.0
+            y_position : 0.0
+        }
+        z_position : 0.0
+        rotation : 0.0
+        scale : 1.0
+        u0{
+            w : 0.0
+            x : 0.0
+            y : 0.0
+            z : 0.0
+        }
+        hidden : 0
+    }
+    u0 : 1.0
+}
+library_item{
+    object{
+        name : 'hiro_xp_whoosh'
+        component{
+            component_type : 'Light'
+            number : 1
+            light{
+                u0 : 3
+                u1 : 2.0
+                u2{
+                    w : 1.0
+                    x : 1.0
+                    y : 1.0
+                    z : 1.0
+                }
+                u3 : 0.0
+                u4 : 0.00019999999494757503
+                u5{
+                    x : 0.0
+                    y : 0.0
+                    z : 0.0
+                }
+                u6 : 150.0
+            }
+        }
+        component{
+            component_type : 'ParticleEmitter'
+            number : 2
+            particle_emitter{
+                particle : 123
+                particle : 3
+                particle : 4
+                u1 : 0
+                u2 : 30
+                u3 : 120
+                u4 : 0
+                u5{
+                    u0 : 1
+                    u1{
+                        w : 1.0
+                        x : 0.8111110925674438
+                        y : 0.0
+                        z : 0.0
+                    }
+                    u2 : 25.0
+                    u2 : 0.6000000238418579
+                    u2 : 20.0
+                    u2 : 60.0
+                    u3 : 0.0
+                    u4 : 0.0
+                    u5 : 0.0
+                    u6{
+                        u0 : 0.0
+                        u1 : 0.0
+                        u2 : 0.0
+                    }
+                }
+                u6 : 1
+            }
+        }
+        component{
+            component_type : 'Particle'
+            number : 3
+            particle{
+                name : 'particle_fure_2'
+                u0 : 40.0
+            }
+        }
+        component{
+            component_type : 'Particle'
+            number : 4
+            particle{
+                name : 'particle_fure_3'
+                u0 : 40.0
+            }
+        }
+        component{
+            component_type : 'ParticleEmitter'
+            number : 120
+            particle_emitter{
+                particle : 123
+                particle : 3
+                particle : 4
+                u1 : 0
+                u2 : 100
+                u3 : 0
+                u4 : 1
+                u5{
+                    u0 : 2
+                    u1{
+                        w : 1.0
+                        x : 1.0
+                        y : 1.0
+                        z : 0.0
+                    }
+                    u2 : 20.0
+                    u2 : 0.6000000238418579
+                    u2 : 10.0
+                    u2 : 30.0
+                    u3 : 0.0
+                    u4 : 0.0
+                    u5 : 0.0
+                    u6{
+                        u0 : 0.0
+                        u1 : 0.0
+                        u2 : 0.0
+                    }
+                }
+                u6 : 1
+            }
+        }
+        component{
+            component_type : 'Particle'
+            number : 123
+            particle{
+                name : 'particle_fure_1'
+                u0 : 30.0
+            }
+        }
+        component{
+            component_type : 'TransformController'
+            number : 125
+        }
+        position{
+            x_position : 0.0
+            y_position : 0.0
+        }
+        z_position : 0.0
+        rotation : 0.0
+        scale : 1.0
+        u0{
+            w : -10.0
+            x : -10.0
+            y : 20.0
+            z : 20.0
+        }
+        hidden : 0
+    }
+    u0 : 1.0
+}
+?dependancy : 'magic'
+?dependancy : 'sclplus'
