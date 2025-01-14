@@ -1,6 +1,13 @@
 # SCL+
 SCL+ or sclplus is a library for Swordigo which makes modding Swordigo easier!
 
+## Usage
+
+There are two ways to use sclplus.
+
+1. Load it as an scl file. You can do this by just adding `sclplus.scl` and `hiro.scl` to your apk. You can also add only `sclplus.scl` and reference it in another scl file (`?dependancy : 'sclplus'`).
+2. Copy and paste the contents of `sclplus.lua` into your lua chunk. Note that you won't be able to use threads this way.
+
 ## Math
 The Math library in SP is an interesting library which adds several functions i.e:
 1. Math.Pow(n, to)
