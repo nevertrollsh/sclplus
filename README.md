@@ -96,7 +96,7 @@ Game.ShowNotification(Random.Choice({"Hello","Hi"}))
 ## Button
 The Button library allows you to make clickable buttons using TextBubbles.
 1. Button.New(name, text, func, args, pos, radius)
-Arguments: name, text, func, args, pos, radius.
+Arguments are: name, text, func, args, pos, radius.
 Example:
 ```lua
 Button.New("cool_button", "Click Me!", function() --[[code to run]] end, nil, hero:position(), 50)
